@@ -20,7 +20,7 @@ class grid {
         int length();
         vec& operator[](int pos);
         vec& operator()(int pos);
-        double& operator[](int posvec, int posarg);
+        // double& operator[](int posvec, int posarg);
         double& operator()(int posvec, int posarg);
 
         // Friend functions for the dimension and length of th system
@@ -31,8 +31,9 @@ class grid {
         grid();
         grid(const grid& otherGrid);
         grid(int dim);
-        grid(int dim, length);
+        grid(int dim, int length);
         ~grid();
+        grid& operator=(const grid& otherGrid);
 
         // Operations to push and remove the last point of a grid (dynamic memory allocation)
         

@@ -23,6 +23,12 @@ int GetLength(const vec& otherVec) {
 
 /* Constructors and destructors for the class */
 
+// Default empty constructor for the class
+vec::vec() {
+    pLength = 0;
+    pData = new double [pLength];
+}
+
 // Default copy constructor for the class
 vec::vec(const vec& otherVec) {
     pLength = otherVec.pLength;
@@ -43,14 +49,23 @@ vec::~vec() {
     delete[] pData;
 }
 
-/* Definition of binary operators */
-
-// Assgination operator, NOT the copy constructor
+// Default assignation operator
 vec& vec::operator=(const vec& otherVec) {
-    // Check if lengths agree
-    for (int i = 0; i < pLength; ++i) pData[i] = otherVec.pData[i];
+    if (this != &otherVec) {
+        vec tmp(otherVec);
+        
+        // Swapping memory positions
+        double* p = tmp.pData;
+        tmp.pData = pData;
+        pData = p;
+
+        // Assignation of the rest of variables
+        pLength = tmp.pLength;
+    }
     return *this;
 }
+
+/* Definition of binary operators */
 
 // Binary addition of vectors
 vec vec::operator+(const vec& otherVec) {
@@ -88,6 +103,18 @@ double vec::HoldNorm(const unsigned int& p) {
 double vec::HoldSemiNorm(const unsigned int& p) {
     double sum = 0;
     for (int i = 1; i < pLength; ++i) sum += pow(pData[i], p);
+    return sqrt(sum);
+}
+
+double HoldNorm(const vec& v, double p) {
+    double sum = 0;
+    for (int i = 0; i < v.pLength; ++i) sum += pow(v.pData[i], p);
+    return sqrt(sum);
+}
+
+double HoldSemiNorm(const vec& v, double p) {
+    double sum = 0;
+    for (int i = 1; i < v.pLength; ++i) sum += pow(v.pData[i], p);
     return sqrt(sum);
 }
 

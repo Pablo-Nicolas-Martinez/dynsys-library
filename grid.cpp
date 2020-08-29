@@ -19,24 +19,24 @@ int grid::length() {
  * structures to be induced in the grid. */
 vec& grid::operator[](int pos) {
     // check the range of the position
-    return pData[i];
+    return pData[pos];
 }
 
 // The same concept as before, matlab style
 vec& grid::operator()(int pos) {
     // Check the range of the position
-    return pData[i - 1];
+    return pData[pos - 1];
 }
 
-// Double bracket access
+/* Double bracket access
 double& grid::operator[](int posvec, int posarg) {
     // Typical checks and stuff
     vec& v(const vec& pData[posvec]);
     return v[posarg];
-}
+} */
 
 // Double parenthesis access
-double& grid:operator()(int posvec, int posarg) {
+double& grid::operator()(int posvec, int posarg) {
     vec& v(const vec& pData[posvec - 1]);
     return v(posarg);
 }
@@ -45,11 +45,11 @@ double& grid:operator()(int posvec, int posarg) {
 
 // Friend functions to access private data
 int GetDimension(const grid& otherGrid) {
-    return pDim;
+    return otherGrid.pDim;
 }
 
 int GetLength(const grid& otherGrid) {
-    return pLength;
+    return otherGrid.pLength;
 }
 
 // Definition for the constructors and destructors
@@ -58,43 +58,64 @@ int GetLength(const grid& otherGrid) {
 grid::grid() {
     pDim = 0;
     pLength = 0;
-    pData = new vec [pLength];
+    vec* pData = new vec [pLength];
 }
 
 // Copy constructor
 grid::grid(const grid& otherGrid) {
-    pDim = otherGrid.dimension();
-    pLength = otherGrid.length();
-    pData = new vec [pLength];
-    for (int i = 0; i < pLength; ++i) pData[i] = otherGrid[i];
+    pDim = otherGrid.pDim;
+    pLength = otherGrid.pLength;
+    vec* pData = new vec [pLength];
+    for (int i = 0; i < pLength; ++i) pData[i] = otherGrid.pData[i];
 }
 
 // Constructor specifying dimension
 grid::grid(int dim) {
     pDim = dim;
     pLength = 0;
-    pData = new vec [pLength];
+    vec* pData = new vec [pLength];
 }
 
 // Constructor specifying dimension and length
 grid::grid(int dim, int length) {
     pDim = dim;
     pLength = length;
-    pData = new vec [pLength];
+    vec& pData = new vec [pLength];
 }
 
 // Default destructor
 grid::~grid() {
     // Specify to destroy every vector and then destroy the grand pointer
+    for (int i = 0; i < pLength; i++) pData[i].~vec();
+    delete[] pData;
 }
 
-// Binary operations between lattices
+// Asignation operator for the grid class
+grid& grid::operator=(const grid& otherGrid) {
+    if (this != &otherGrid) {
+        grid tmp(otherGrid);
+
+        // Swapping memory positions
+        vec* p = tmp.pData;
+        tmp.pData = pData;
+        pData = p;
+
+        /* NOTE: there is no need to worry for the memory associated to the
+         * copy grid tmp, as the default destructor handles the memory
+         * allocated once the block ends */
+        
+        // The rest of the variables
+        pDim = otherGrid.pDim;
+        pLength = otherGrid.pLength;
+}
+
+// Binary operators for the class
 
 // Sum of two lattices
 grid grid::operator+(const grid& otherGrid) {
     // Check agreeement of dimensions and length of grids
     g = grid(pDim, pLength);
-    for (int i = 0; i < pLength; ++i) g[i] = pData[i] + otherGrid[i];
+    for (int i = 0; i < pLength; ++i) g[i] = pData[i] + otherGrid.pData[i];
     return g;
 }
 
@@ -102,13 +123,13 @@ grid grid::operator+(const grid& otherGrid) {
 grid grid::operator-(const grid& otherGrid) {
     // Check agreement of dimension and length
     g = grid(pDim, pLength);
-    for (int i = 0; i < pLength; ++i) g[i] = pData[i] + otherGrid[i];
+    for (int i = 0; i < pLength; ++i) g[i] = pData[i] + otherGrid.pData[i];
     return g;
 }
 
 // Product of a lattice by a scalar
 grid grid::operator*(const double& a) {
     g = grid(pDim, pLength);
-    for (int i = 0; i < pLength; ++i) g[i] = pData[i] + otherGrid[i];
+    for (int i = 0; i < pLength; ++i) g[i] = pData[i] + otherGrid.pData[i];
     return g;
 }
