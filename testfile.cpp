@@ -89,7 +89,7 @@ int main() {
     std::cout << std::endl;
     
     // Testing the class declaration and Runge-Kutta methods
-    DynSys Duffing(DuffFunction, 3, DuffDomain);
+    // DynSys Duffing(DuffFunction, 3, DuffDomain);
 
 
 }

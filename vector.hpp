@@ -33,7 +33,13 @@ class vec {
         vec operator-(const vec& otherVec);
         vec operator*(const double& a);
         vec operator/(const double& a);
-        
+
+        // Definition of the same operations for constant vectors as arguments
+        vec operator+(const vec& otherVec) const;
+        vec operator-(const vec& otherVec) const;
+        vec operator*(const double& a) const;
+        vec operator/(const double& a) const;
+
         // Holder norms and seminorms
         // TODO: Possibly add euclidian norms, associated to a scalar product
         double HoldNorm(const unsigned int& p);

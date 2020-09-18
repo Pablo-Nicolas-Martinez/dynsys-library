@@ -16,6 +16,7 @@ class DynSys {
         bool isDomain(const vec& p);
 
         // Default, copy and more constructors and default destructor
+        DynSys(const DynSys& otherSys);
         DynSys(vec (*f)(const vec& p), int dim, bool (*domain)(const vec& p));
         ~DynSys();
         DynSys& operator=(const DynSys& otherSys);

@@ -95,6 +95,38 @@ vec vec::operator*(const double& a) {
     return v;
 }
 
+/* Definition of binary operators with constant vectors as arguments */
+
+// Binary addition of vectors
+vec vec::operator+(const vec& otherVec) const {
+    // Check if the lengths of both vectors agree
+    vec v(pLength);
+    for (int i = 0; i < pLength; ++i) v[i] = pData[i] + otherVec.pData[i];
+    return v;
+}
+
+// Binary substraction of vectors
+vec vec::operator-(const vec& otherVec) const {
+    // Check if lengths agree
+    vec v(pLength);
+    for (int i = 0; i < pLength; ++i) v[i] = pData[i] - otherVec.pData[i];
+    return v;
+}
+
+// Product by a scalar
+vec vec::operator*(const double& a) const {
+    vec v(pLength);
+    for (int i = 0; i < pLength; ++i) v[i] = a*pData[i];
+    return v;
+}
+
+// Division by a scalar
+vec vec::operator/(const double& a) const {
+    vec v(pLength);
+    for (int i = 0; i < pLength; ++i) v[i] = pData[i]/a;
+    return v;
+}
+
 // Division by a scalar
 vec vec::operator/(const double& a) {
     vec v(pLength);

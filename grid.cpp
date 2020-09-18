@@ -46,6 +46,18 @@ double& grid::operator()(int posvec, int posarg) {
     return v(posarg);
 }
 
+// Access operators if we have the class declared as constant
+
+// Returns the dimension of the system, already explained
+int grid::dimension() const {
+    return pDim;
+}
+
+// Returns the number of points in the grid
+int grid::length() const {
+    return pLength;
+}
+
 // Friend functions for accessing private data
 
 // Friend functions to access private data

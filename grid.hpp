@@ -25,6 +25,10 @@ class grid {
         // double& operator[](int posvec, int posarg);
         double& operator()(int posvec, int posarg);
 
+        // Access operators for the constant class
+        int dimension() const;
+        int length() const;
+
         // Friend functions for the dimension and length of th system
         friend int GetDimension(const grid& otherGrid);
         friend int GetLength(const grid& otherGrid);

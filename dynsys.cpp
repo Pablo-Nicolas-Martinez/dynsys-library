@@ -4,7 +4,7 @@
 
 // Function access to the private data of the class
 
-// Evaluate the functin of the system in a given point
+// Evaluate the function of the system in a given point
 vec DynSys::evaluate(const vec& p) {
     // Check if the dimension of the system agrees with the lenght of the vector
     return pF(p);
@@ -35,13 +35,13 @@ DynSys::DynSys(vec (*fun)(const vec& p), int dim, bool (*dom)(const vec& p)) {
     pDim = dim;
     pDomain = dom;
 }
-/*
+
 // Default destructor
 DynSys::~DynSys() {
-    delete pF;
-    delete pDomain;
+    //delete pF;
+    //delete pDomain;
 }
-*/
+
 // Asignation operator for the class
 DynSys& DynSys::operator=(const DynSys& otherSys) {
     if (this != &otherSys) {
@@ -68,8 +68,9 @@ DynSys& DynSys::operator=(const DynSys& otherSys) {
 // Extension of ode function to a grid
 grid DynSys::evalGrid(const grid& otherGrid) {
     // Check that the dimension of the grid agrees with that of the system
-    grid g(otherGrid.pDim, otherGrid.pLength);
-    for (int i = 0; i < otherGrid.pLength; ++i) g[i] = otherGrid.pData[i];
+    grid g(otherGrid.dimension(), otherGrid.length());
+    int length = otherGrid.length();
+    for (int i = 0; i < length; ++i) g[i] = otherGrid[i];
     return g;
 }
 
@@ -79,16 +80,17 @@ grid DynSys::evalGrid(const grid& otherGrid) {
  * a boolean grid asociated to the one we have now. */
 bool DynSys::isDomainGrid(const grid& otherGrid) {
     // Check that dimensions agree
-    for (int i = 0; i < otherGrid.pLength; ++i) 
-        if(not isDomain(otherGrid.pData[i])) return false;
+    int length = otherGrid.length();
+    for (int i = 0; i < length; ++i) 
+        if(not isDomain(otherGrid[i])) return false;
     return true;
 }
 
 // Numeric integrators
 vec DynSys::RK4(const vec& initCond, double dt) {
-    vec& k1(evaluate(initCond));
-    vec& k2(evaluate(initCond + k1*(dt/2)));
-    vec& k3(evaluate(initCond + k2*(dt/2)));
-    vec& k4(evaluate(initCond + k3*dt));
+    vec k1(evaluate(initCond));
+    vec k2(evaluate(initCond + k1*(dt/2)));
+    vec k3(evaluate(initCond + k2*(dt/2)));
+    vec k4(evaluate(initCond + k3*dt));
     return vec(initCond + k1/6 + k2/3 + k3/3 + k4/6);
 }
