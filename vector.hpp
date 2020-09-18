@@ -1,14 +1,20 @@
 #ifndef VECHEADER
 #define VECHEADER
 
+class DynSys;
+
 class vec {
     private:
         double* pData;
         int pLength;
     public:
+        // Friend class
+        friend class DynSys;
+
         // Basic access operators
         int length();
         double& operator[](int pos);
+        double operator[](int pos) const;
         double& operator()(int pos);
 
         // Friend access operators
@@ -26,6 +32,7 @@ class vec {
         vec operator+(const vec& otherVec);
         vec operator-(const vec& otherVec);
         vec operator*(const double& a);
+        vec operator/(const double& a);
         
         // Holder norms and seminorms
         // TODO: Possibly add euclidian norms, associated to a scalar product

@@ -5,6 +5,7 @@
 
 class grid {
     private:
+        // type T; // To define in the future for supporting different types of variables
         vec* pData;
         int pDim;
         int pLength;
@@ -19,6 +20,7 @@ class grid {
         int dimension();
         int length();
         vec& operator[](int pos);
+        vec operator[](int pos) const;
         vec& operator()(int pos);
         // double& operator[](int posvec, int posarg);
         double& operator()(int posvec, int posarg);
@@ -41,6 +43,7 @@ class grid {
         grid operator+(const grid& otherGrid);
         grid operator-(const grid& otherGrid);
         grid operator*(const double& a);
+        grid operator/(const double& a);
 
         // Declarations of rectilinear grids (???)
         // Declare it on the appropriate constructors

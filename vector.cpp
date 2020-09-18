@@ -12,6 +12,11 @@ double& vec::operator[](int pos) {
     return pData[pos];
 }
 
+double vec::operator[](int pos) const {
+    // Check the position of index
+    return pData[pos];
+}
+
 double& vec::operator()(int pos) {
     // Check if 0 < i <= pLength
     return pData[pos - 1];
@@ -79,7 +84,7 @@ vec vec::operator+(const vec& otherVec) {
 vec vec::operator-(const vec& otherVec) {
     // Check if lengths agree
     vec v(pLength);
-    for (int i = 0; i < pLength; ++i) v[i] = pData[i] + otherVec.pData[i];
+    for (int i = 0; i < pLength; ++i) v[i] = pData[i] - otherVec.pData[i];
     return v;
 }
 
@@ -87,6 +92,13 @@ vec vec::operator-(const vec& otherVec) {
 vec vec::operator*(const double& a) {
     vec v(pLength);
     for (int i = 0; i < pLength; ++i) v[i] = a*pData[i];
+    return v;
+}
+
+// Division by a scalar
+vec vec::operator/(const double& a) {
+    vec v(pLength);
+    for (int i = 0; i < pLength; ++i) v[i] = pData[i]/a;
     return v;
 }
 

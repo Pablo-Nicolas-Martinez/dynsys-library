@@ -22,6 +22,11 @@ vec& grid::operator[](int pos) {
     return pData[pos];
 }
 
+vec grid::operator[](int pos) const {
+    // Check the range of the position
+    return pData[pos];
+}
+
 // The same concept as before, matlab style
 vec& grid::operator()(int pos) {
     // Check the range of the position
@@ -37,7 +42,7 @@ double& grid::operator[](int posvec, int posarg) {
 
 // Double parenthesis access
 double& grid::operator()(int posvec, int posarg) {
-    vec& v(const vec& pData[posvec - 1]);
+    vec& v(pData[posvec - 1]);
     return v(posarg);
 }
 
@@ -58,14 +63,14 @@ int GetLength(const grid& otherGrid) {
 grid::grid() {
     pDim = 0;
     pLength = 0;
-    vec* pData = new vec [pLength];
+    pData = new vec [pLength];
 }
 
 // Copy constructor
 grid::grid(const grid& otherGrid) {
     pDim = otherGrid.pDim;
     pLength = otherGrid.pLength;
-    vec* pData = new vec [pLength];
+    pData = new vec [pLength];
     for (int i = 0; i < pLength; ++i) pData[i] = otherGrid.pData[i];
 }
 
@@ -73,20 +78,20 @@ grid::grid(const grid& otherGrid) {
 grid::grid(int dim) {
     pDim = dim;
     pLength = 0;
-    vec* pData = new vec [pLength];
+    pData = new vec [pLength];
 }
 
 // Constructor specifying dimension and length
 grid::grid(int dim, int length) {
     pDim = dim;
     pLength = length;
-    vec& pData = new vec [pLength];
+    pData = new vec [pLength];
 }
 
 // Default destructor
 grid::~grid() {
     // Specify to destroy every vector and then destroy the grand pointer
-    for (int i = 0; i < pLength; i++) pData[i].~vec();
+    // for (int i = 0; i < pLength; i++) pData[i].~vec();
     delete[] pData;
 }
 
@@ -107,6 +112,8 @@ grid& grid::operator=(const grid& otherGrid) {
         // The rest of the variables
         pDim = otherGrid.pDim;
         pLength = otherGrid.pLength;
+    }
+    return *this;
 }
 
 // Binary operators for the class
@@ -114,7 +121,7 @@ grid& grid::operator=(const grid& otherGrid) {
 // Sum of two lattices
 grid grid::operator+(const grid& otherGrid) {
     // Check agreeement of dimensions and length of grids
-    g = grid(pDim, pLength);
+    grid g(pDim, pLength);
     for (int i = 0; i < pLength; ++i) g[i] = pData[i] + otherGrid.pData[i];
     return g;
 }
@@ -122,14 +129,21 @@ grid grid::operator+(const grid& otherGrid) {
 // Substraction of two lattices
 grid grid::operator-(const grid& otherGrid) {
     // Check agreement of dimension and length
-    g = grid(pDim, pLength);
-    for (int i = 0; i < pLength; ++i) g[i] = pData[i] + otherGrid.pData[i];
+    grid g(pDim, pLength);
+    for (int i = 0; i < pLength; ++i) g[i] = pData[i] - otherGrid.pData[i];
     return g;
 }
 
 // Product of a lattice by a scalar
 grid grid::operator*(const double& a) {
-    g = grid(pDim, pLength);
-    for (int i = 0; i < pLength; ++i) g[i] = pData[i] + otherGrid.pData[i];
+    grid g(pDim, pLength);
+    for (int i = 0; i < pLength; ++i) g[i] = pData[i]*a;
+    return g;
+}
+
+// Division of a lattice by a scalar
+grid grid::operator/(const double& a) {
+    grid g(pDim, pLength);
+    for (int i = 0; i < pLength; ++i) g[i] = pData[i]/a;
     return g;
 }
