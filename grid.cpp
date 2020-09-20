@@ -159,3 +159,36 @@ grid grid::operator/(const double& a) {
     for (int i = 0; i < pLength; ++i) g[i] = pData[i]/a;
     return g;
 }
+
+
+// Binary operators for the class
+
+// Sum of two lattices
+grid grid::operator+(const grid& otherGrid) const {
+    // Check agreeement of dimensions and length of grids
+    grid g(pDim, pLength);
+    for (int i = 0; i < pLength; ++i) g[i] = pData[i] + otherGrid.pData[i];
+    return g;
+}
+
+// Substraction of two lattices
+grid grid::operator-(const grid& otherGrid) const {
+    // Check agreement of dimension and length
+    grid g(pDim, pLength);
+    for (int i = 0; i < pLength; ++i) g[i] = pData[i] - otherGrid.pData[i];
+    return g;
+}
+
+// Product of a lattice by a scalar
+grid grid::operator*(const double& a) const {
+    grid g(pDim, pLength);
+    for (int i = 0; i < pLength; ++i) g[i] = pData[i]*a;
+    return g;
+}
+
+// Division of a lattice by a scalar
+grid grid::operator/(const double& a) const {
+    grid g(pDim, pLength);
+    for (int i = 0; i < pLength; ++i) g[i] = pData[i]/a;
+    return g;
+}

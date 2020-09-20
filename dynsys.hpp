@@ -22,17 +22,17 @@ class DynSys {
         DynSys& operator=(const DynSys& otherSys);
 
         // Extension of the default functions to grids
-        grid evalGrid(const grid& otherGrid);
+        grid evaluate(const grid& otherGrid);
         bool isDomainGrid(const grid& otherGrid);
 
         // Numeric integrators and Lagrange functions
         vec RK4(const vec& initCond, double dt);
         //vec RungeKutta(const vec& initCond, double dt);
-        //double LagrFunction(const vec& initCond, double tau, double dt);
+        double LagrFunction(const vec& initCond, double tau, double dt);
 
         // Extension of the 
-        //grid RungeKutta(const grid& initStep, double dt);
-        //grid LagrFunction(const grid& baseState, double tau, double dt);
+        grid RK4(const grid& initStep, double dt);
+        //vec LagrFunction(const grid& baseState, double tau, double dt);
         
         // Declarators from scratch and from netcdf files. Declarator from netcdf file has to implement interpolation on 
         // General destructor

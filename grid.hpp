@@ -49,6 +49,12 @@ class grid {
         grid operator*(const double& a);
         grid operator/(const double& a);
 
+        // Members for operations on the constant class
+        grid operator+(const grid& otherGrid) const;
+        grid operator-(const grid& otherGrid) const;
+        grid operator*(const double& a) const;
+        grid operator/(const double& a) const;
+
         // Declarations of rectilinear grids (???)
         // Declare it on the appropriate constructors
 };

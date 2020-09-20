@@ -66,11 +66,11 @@ DynSys& DynSys::operator=(const DynSys& otherSys) {
 // Extension of default functions to grids of vectors
 
 // Extension of ode function to a grid
-grid DynSys::evalGrid(const grid& otherGrid) {
+grid DynSys::evaluate(const grid& otherGrid) {
     // Check that the dimension of the grid agrees with that of the system
     grid g(otherGrid.dimension(), otherGrid.length());
     int length = otherGrid.length();
-    for (int i = 0; i < length; ++i) g[i] = otherGrid[i];
+    for (int i = 0; i < length; ++i) g[i] = evaluate(otherGrid[i]);
     return g;
 }
 
@@ -92,5 +92,53 @@ vec DynSys::RK4(const vec& initCond, double dt) {
     vec k2(evaluate(initCond + k1*(dt/2)));
     vec k3(evaluate(initCond + k2*(dt/2)));
     vec k4(evaluate(initCond + k3*dt));
-    return vec(initCond + k1/6 + k2/3 + k3/3 + k4/6);
+    return vec(initCond + k1*(dt/6) + k2*(dt/3) + k3*(dt/3) + k4*(dt/6));
 }
+
+grid DynSys::RK4(const grid& initStep, double dt) {    
+    grid k1(evaluate(initStep));
+    grid k2(evaluate(initStep + k1*(dt/2)));
+    grid k3(evaluate(initStep + k2*(dt/2)));
+    grid k4(evaluate(initStep + k3*dt));
+    return grid(initStep + k1*(dt/6) + k2*(dt/3) + k3*(dt/3) + k4*(dt/6));
+}
+
+// Lagrange functions for vectors and grids
+
+/* The following lines of code contain a possible implementation of the
+ * Lagrange function, which applies the Lagrange function to each vector of
+ * the grid passed as parameter. Another option is to apply a Runge-Kutta
+ * method directly on the grid and compute directly the increments. Probably
+ * it will not be able to return a vector, unless the norm is defined as a
+ * function on the grid class which returns a vector. It would be more
+ * appropriate to return a scalar grid, as the internal structure of the space
+ * is preservec */
+
+// Lagrange function of a given point in the domain
+double DynSys::LagrFunction(const vec& initCond, double tau, double dt) {
+    // Check if the point belongs to the domain, if contrary throw an exception
+    
+    // Setting up two initial conditions for two-sided integration
+    vec posP = initCond;
+    vec negP = initCond;
+    double sum = HoldSemiNorm(evaluate(initCond), 2);
+    int numit = tau/dt;
+
+    for (int i = 0; i < numit; ++i) {
+        posP = RK4(posP, dt);
+        negP = RK4(negP, -dt);
+        sum += (HoldSemiNorm(evaluate(posP), 2) + HoldSemiNorm(evaluate(negP), 2))*dt;
+    }
+
+    return sum;
+}
+/*
+vec DynSys::LagrFunction(const grid& baseState, double tau, double dt) {
+    int length = GetLength(baseState);
+    vec v(length);
+    for (int i = 0; i < length; ++i) {
+        v[i] = RK4(baseState[i], tau, dt);
+    }
+    return v;
+}
+*/
