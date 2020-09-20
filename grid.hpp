@@ -55,6 +55,13 @@ class grid {
         grid operator*(const double& a) const;
         grid operator/(const double& a) const;
 
+        // Vector declaration of norms and seminorms on grids, a natural
+        // extension component-wise of the ones defined for vectors
+        vec HoldNorm(const unsigned int& p);
+        vec HoldSemiNorm(const unsigned int& p); // useful for the M function
+        friend vec HoldNorm(const grid& g, double p);
+        friend vec HoldSemiNorm(const grid& g, double p);
+
         // Declarations of rectilinear grids (???)
         // Declare it on the appropriate constructors
 };

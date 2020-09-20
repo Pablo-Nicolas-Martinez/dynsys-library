@@ -192,3 +192,31 @@ grid grid::operator/(const double& a) const {
     for (int i = 0; i < pLength; ++i) g[i] = pData[i]/a;
     return g;
 }
+
+// Norms and seminorms on grids
+
+vec grid::HoldNorm(const unsigned int& p) {
+    vec v(pLength);
+    for (int i = 0; i < pLength; ++i) v[i] = HoldNorm(pData[i], p);
+    return v;
+}
+
+vec grid::HoldSemiNorm(const unsigned int& p) {
+    vec v(pLength);
+    for (int i = 0; i < pLength; ++i) v[i] = HoldSemiNorm(pData[i], p);
+    return v;
+}
+
+vec HoldNorm(const grid& g, double p) {
+    int length = GetLength(g);
+    vec v(length);
+    for (int i = 0; i < length; ++i) v[i] = HoldNorm(g[i], p);
+    return v;
+}
+
+vec HoldSemiNorm(const grid& g, double p) {
+    int length = GetLength(g);
+    vec v(length);
+    for (int i = 0; i < length; ++i) v[i] = HoldSemiNorm(g[i], p);
+    return v;
+}

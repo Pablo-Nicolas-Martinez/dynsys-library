@@ -32,7 +32,7 @@ class DynSys {
 
         // Extension of the 
         grid RK4(const grid& initStep, double dt);
-        //vec LagrFunction(const grid& baseState, double tau, double dt);
+        vec LagrFunction(const grid& baseState, double tau, double dt);
         
         // Declarators from scratch and from netcdf files. Declarator from netcdf file has to implement interpolation on 
         // General destructor

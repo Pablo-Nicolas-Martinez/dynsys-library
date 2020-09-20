@@ -132,7 +132,7 @@ double DynSys::LagrFunction(const vec& initCond, double tau, double dt) {
 
     return sum;
 }
-/*
+
 vec DynSys::LagrFunction(const grid& baseState, double tau, double dt) {
     int length = GetLength(baseState);
     vec v(length);
@@ -141,4 +141,4 @@ vec DynSys::LagrFunction(const grid& baseState, double tau, double dt) {
     }
     return v;
 }
-*/
+
