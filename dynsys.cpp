@@ -137,7 +137,7 @@ vec DynSys::LagrFunction(const grid& baseState, double tau, double dt) {
     int length = GetLength(baseState);
     vec v(length);
     for (int i = 0; i < length; ++i) {
-        v[i] = RK4(baseState[i], tau, dt);
+        v[i] = LagrFunction(baseState[i], tau, dt);
     }
     return v;
 }

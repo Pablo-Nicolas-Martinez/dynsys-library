@@ -1,5 +1,5 @@
-#include "vector.hpp"
 #include "grid.hpp"
+#include "vector.hpp"
 
 /* Access to private data functions */
 
@@ -197,13 +197,13 @@ grid grid::operator/(const double& a) const {
 
 vec grid::HoldNorm(const unsigned int& p) {
     vec v(pLength);
-    for (int i = 0; i < pLength; ++i) v[i] = HoldNorm(pData[i], p);
+    for (int i = 0; i < pLength; ++i) v[i] = ::HoldNorm(pData[i], p);
     return v;
 }
 
 vec grid::HoldSemiNorm(const unsigned int& p) {
     vec v(pLength);
-    for (int i = 0; i < pLength; ++i) v[i] = HoldSemiNorm(pData[i], p);
+    for (int i = 0; i < pLength; ++i) v[i] = ::HoldSemiNorm(pData[i], p);
     return v;
 }
 

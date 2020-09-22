@@ -54,6 +54,7 @@ vec::~vec() {
     delete[] pData;
 }
 
+
 // Default assignation operator
 vec& vec::operator=(const vec& otherVec) {
     if (this != &otherVec) {

@@ -1,24 +1,28 @@
 #ifndef VECHEADER
 #define VECHEADER
 
-class DynSys;
+template<typename T>
+inline auto GetLength(const T& v) {
+    return v.length();
+}
+
+template<int N>
+class Vec {
+    private:
+        double data[N];
+    public:
+};
 
 class vec {
     private:
         double* pData;
         int pLength;
     public:
-        // Friend class
-        friend class DynSys;
-
         // Basic access operators
-        int length();
+        inline int length() const { return pLength; }
         double& operator[](int pos);
         double operator[](int pos) const;
         double& operator()(int pos);
-
-        // Friend access operators
-        friend int GetLength(const vec& otherVec);
 
         // Definition of the default copy constructor and initialize with dimension
         vec();
@@ -44,8 +48,9 @@ class vec {
         // TODO: Possibly add euclidian norms, associated to a scalar product
         double HoldNorm(const unsigned int& p);
         double HoldSemiNorm(const unsigned int& p); // useful for the M function
-        friend double HoldNorm(const vec& v, double p);
-        friend double HoldSemiNorm(const vec& v, double p);
 };
+
+double HoldNorm(const vec& v, double p);
+double HoldSemiNorm(const vec& v, double p);
 
 #endif
