@@ -1,12 +1,10 @@
-#include "vector.hpp"
-#include "grid.hpp"
 #include "dynsys.hpp"
 
 // Function access to the private data of the class
 
 // Evaluate the function of the system in a given point
-vec DynSys::evaluate(const vec& p) {
-    // Check if the dimension of the system agrees with the lenght of the vector
+Vec DynSys::evaluate(const Vec& p) {
+    // Check if the dimension of the system agrees with the length of the vector
     return pF(p);
 }
 
@@ -16,7 +14,7 @@ int DynSys::dimension() {
 }
 
 // Checks if the given point belongs to the domain of the system
-bool DynSys::isDomain(const vec& p) {
+bool DynSys::isDomain(const Vec& p) {
     return pDomain(p);
 }
 
@@ -30,7 +28,7 @@ DynSys::DynSys(const DynSys& otherSys) {
 }
 
 // Constructor with parameters specified
-DynSys::DynSys(vec (*fun)(const vec& p), int dim, bool (*dom)(const vec& p)) {
+DynSys::DynSys(Vec (*fun)(const Vec& p), int dim, bool (*dom)(const Vec& p)) {
     pF = fun;
     pDim = dim;
     pDomain = dom;
@@ -51,12 +49,12 @@ DynSys& DynSys::operator=(const DynSys& otherSys) {
         /// Is it really necessary???
 
         // Swap pointers to function
-        vec (*tmpf)(const vec& p) = tmp.pF;
+        Vec (*tmpf)(const Vec& p) = tmp.pF;
         tmp.pF = pF;
         pF = tmpf;
 
         // Swap pointers to domain
-        bool (*tmpdom)(const vec& p) = tmp.pDomain;
+        bool (*tmpdom)(const Vec& p) = tmp.pDomain;
         tmp.pDomain = pDomain;
         pDomain = tmpdom;
     }
@@ -66,9 +64,9 @@ DynSys& DynSys::operator=(const DynSys& otherSys) {
 // Extension of default functions to grids of vectors
 
 // Extension of ode function to a grid
-grid DynSys::evaluate(const grid& otherGrid) {
-    // Check that the dimension of the grid agrees with that of the system
-    grid g(otherGrid.dimension(), otherGrid.length());
+Grid DynSys::evaluate(const Grid& otherGrid) {
+    // Check that the dimension of the Grid agrees with that of the system
+    Grid g(otherGrid.dimension(), otherGrid.length());
     int length = otherGrid.length();
     for (int i = 0; i < length; ++i) g[i] = evaluate(otherGrid[i]);
     return g;
@@ -78,7 +76,7 @@ grid DynSys::evaluate(const grid& otherGrid) {
  * At the moment the implementation is over a whole grid and returns true
  * iff every point returns true. It can be changed in the future to return
  * a boolean grid asociated to the one we have now. */
-bool DynSys::isDomainGrid(const grid& otherGrid) {
+bool DynSys::isDomainGrid(const Grid& otherGrid) {
     // Check that dimensions agree
     int length = otherGrid.length();
     for (int i = 0; i < length; ++i) 
@@ -87,20 +85,20 @@ bool DynSys::isDomainGrid(const grid& otherGrid) {
 }
 
 // Numeric integrators
-vec DynSys::RK4(const vec& initCond, double dt) {
-    vec k1(evaluate(initCond));
-    vec k2(evaluate(initCond + k1*(dt/2)));
-    vec k3(evaluate(initCond + k2*(dt/2)));
-    vec k4(evaluate(initCond + k3*dt));
-    return vec(initCond + k1*(dt/6) + k2*(dt/3) + k3*(dt/3) + k4*(dt/6));
+Vec DynSys::RK4(const Vec& initCond, double dt) {
+    Vec k1(evaluate(initCond));
+    Vec k2(evaluate(initCond + k1*(dt/2)));
+    Vec k3(evaluate(initCond + k2*(dt/2)));
+    Vec k4(evaluate(initCond + k3*dt));
+    return Vec(initCond + k1*(dt/6) + k2*(dt/3) + k3*(dt/3) + k4*(dt/6));
 }
 
-grid DynSys::RK4(const grid& initStep, double dt) {    
-    grid k1(evaluate(initStep));
-    grid k2(evaluate(initStep + k1*(dt/2)));
-    grid k3(evaluate(initStep + k2*(dt/2)));
-    grid k4(evaluate(initStep + k3*dt));
-    return grid(initStep + k1*(dt/6) + k2*(dt/3) + k3*(dt/3) + k4*(dt/6));
+Grid DynSys::RK4(const Grid& initStep, double dt) {    
+    Grid k1(evaluate(initStep));
+    Grid k2(evaluate(initStep + k1*(dt/2)));
+    Grid k3(evaluate(initStep + k2*(dt/2)));
+    Grid k4(evaluate(initStep + k3*dt));
+    return Grid(initStep + k1*(dt/6) + k2*(dt/3) + k3*(dt/3) + k4*(dt/6));
 }
 
 // Lagrange functions for vectors and grids
@@ -115,12 +113,12 @@ grid DynSys::RK4(const grid& initStep, double dt) {
  * is preservec */
 
 // Lagrange function of a given point in the domain
-double DynSys::LagrFunction(const vec& initCond, double tau, double dt) {
+double DynSys::LagrFunction(const Vec& initCond, double tau, double dt) {
     // Check if the point belongs to the domain, if contrary throw an exception
     
     // Setting up two initial conditions for two-sided integration
-    vec posP = initCond;
-    vec negP = initCond;
+    Vec posP = initCond;
+    Vec negP = initCond;
     double sum = HoldSemiNorm(evaluate(initCond), 2);
     int numit = tau/dt;
 
@@ -133,9 +131,9 @@ double DynSys::LagrFunction(const vec& initCond, double tau, double dt) {
     return sum;
 }
 
-vec DynSys::LagrFunction(const grid& baseState, double tau, double dt) {
-    int length = GetLength(baseState);
-    vec v(length);
+Vec DynSys::LagrFunction(const Grid& baseState, double tau, double dt) {
+    int length = baseState.length();
+    Vec v(length);
     for (int i = 0; i < length; ++i) {
         v[i] = LagrFunction(baseState[i], tau, dt);
     }

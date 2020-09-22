@@ -1,15 +1,14 @@
 #include <iostream>
-#include "vector.hpp"
-#include "grid.hpp"
 #include "dynsys.hpp"
+#include "wrappers.hpp"
 
-bool DuffDomain(const vec& p) {
+bool DuffDomain(const Vec& p) {
     // Check that the dimension is actually 3
     return true;
 }
 
-vec DuffFunction(const vec& p) {
-    vec v(3);
+Vec DuffFunction(const Vec& p) {
+    Vec v(3);
     v[0] = 1.0;
     v[1] = p[2];
     v[2] = p[1] - p[1]*p[1]*p[1];
@@ -21,7 +20,7 @@ int main() {
     // Vector class testing
     
     // Declaration testing
-    vec v(3);
+    Vec v(3);
     v[0] = 3;
     v[1] = 0;
     v[2] = 4;
@@ -30,22 +29,22 @@ int main() {
     std::cout << '\n';
 
     // Holder norms and seminorms declaration
-    std::cout << "The 2-Holder norm of the vector is " << v.HoldNorm(2) << '\n';
-    std::cout << "The 2-Holder semi-norm of the vector is " << v.HoldSemiNorm(2) << '\n';
+    std::cout << "The 2-Holder norm of the Vector is " << HoldNorm(v, 2) << '\n';
+    std::cout << "The 2-Holder semi-norm of the Vector is " << HoldSemiNorm(v, 2) << '\n';
 
-    std::cout << "The length of the vector is " << v.length() << std::endl;
+    std::cout << "The length of the Vector is " << v.length() << std::endl;
     std::cout << "The length by the friend function is " << GetLength(v) << std::endl;
 
-    vec b(3);
+    Vec b(3);
     b[1] = 5;
 
     // Testing empty constructor, binary operations and asignation operator
-    vec u = v + b;
+    Vec u = v + b;
 
     for (int i = 0; i < 3; ++i) std::cout << u[i] << ' ';
     
     // Grid class testing
-    grid g(3, 3);
+    Grid g(3, 3);
     std::cout << "The length of the grid is " << g.length() << std::endl;
     std::cout << "The length of the grid is " << GetLength(g) << std::endl;
     std::cout << "The dimension of the grid is " << g.dimension() << std::endl;
@@ -58,39 +57,39 @@ int main() {
 
     // Value outputting
     for (int i = 0; i < g.length(); ++i) {
-        vec& v(g[i]);
+        Vec& v(g[i]);
         for (int j = 0; j < g.dimension(); ++j) std::cout << v[j] << ' ';
         std::cout << std::endl;
     }
 
     // More grid declaration with copy and modification
-    grid h = grid(3, 3);
+    Grid h = Grid(3, 3);
     
     h[2] = v;
 
-    grid f = (g - h)/2;
+    Grid f = (g - h)/2;
 
     // Value outputting
     for (int i = 0; i < f.length(); ++i) {
-        vec& v(f[i]);
+        Vec& v(f[i]);
         for (int j = 0; j < f.dimension(); ++j) std::cout << v[j] << ' ';
         std::cout << std::endl;
     }
     
     // Testing the functions for the duffing equation
-    vec fpoint(3);
+    Vec fpoint(3);
     fpoint[0] = 0;
     fpoint[1] = 1;
     fpoint[2] = 0;
-    vec disp(DuffFunction(fpoint));
+    Vec disp(DuffFunction(fpoint));
     std::cout << "Does the point belong in the domain? " << DuffDomain(fpoint) << std::endl;
-    std::cout << "The components of the function vector are given by" << std::endl;
+    std::cout << "The components of the function Vector are given by" << std::endl;
     for (int i = 0; i < 3; ++i) std::cout << disp[i] << ' ';
     std::cout << std::endl << std::endl;
     
     // Testing the class declaration and Runge-Kutta methods
     DynSys Duffing(DuffFunction, 3, DuffDomain);
-    vec image = Duffing.evaluate(fpoint);
+    Vec image = Duffing.evaluate(fpoint);
 
     // The same as before but with the declared class
     std::cout << "Does the point belong in the domain? "
@@ -104,7 +103,7 @@ int main() {
     for (int i = 0; i < 3; ++i) std::cout << image[i] << ' ';
     std::cout << std::endl; 
 
-    vec nextiter = Duffing.RK4(fpoint, 0.1); 
+    Vec nextiter = Duffing.RK4(fpoint, 0.1); 
 
     std::cout << "What is the next iterate by means of the Runge-Kutta method?" << std::endl;
     for (int i = 0; i < 3; ++i) std::cout << nextiter[i] << ' ';
@@ -112,11 +111,11 @@ int main() {
 
     // Testing the action on a grid by a Runge-Kutta method
 
-    grid DuffGrid(3, 3);
+    Grid DuffGrid(3, 3);
     
-    vec p1 = fpoint;
-    vec p2(3);
-    vec p3(3);
+    Vec p1 = fpoint;
+    Vec p2(3);
+    Vec p3(3);
 
     p2[0] = 0;
     p2[1] = 0;
@@ -132,7 +131,7 @@ int main() {
 
     // Printing the grid to see the actual points
     for (int i = 0; i < 3; ++i) {
-        vec temp = DuffGrid[i];
+        Vec temp = DuffGrid[i];
         // Printing each actual vector
         for (int j = 0; j < 3; ++j) std::cout << temp[j] << ' ';
         std::cout << std::endl;
@@ -141,11 +140,11 @@ int main() {
     std::cout << std::endl;
 
     // Declaring the grid obtanined by a Runge-Kutta iteration
-    grid DuffNext = Duffing.RK4(DuffGrid, 0.1);
+    Grid DuffNext = Duffing.RK4(DuffGrid, 0.1);
 
     // Printing the next grid to see if it works
     for (int i = 0; i < 3; ++i) {
-        vec temp = DuffNext[i];
+        Vec temp = DuffNext[i];
         // Printing each actual vector
         for (int j = 0; j < 3; ++j) std::cout << temp[j] << ' ';
         std::cout << std::endl;

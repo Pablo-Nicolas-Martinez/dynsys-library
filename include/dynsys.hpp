@@ -1,41 +1,44 @@
-#ifndef DYNSYSHEADER
-#define DYNSYSHEADER
+#ifndef DYNSYS_DYNSYS_HPP_
+#define DYNSYS_DYNSYS_HPP_
 
-#include "vector.hpp"
+#include "vec.hpp"
 #include "grid.hpp"
 
+//NOTE: DIY
 class DynSys {
     private:
-        vec (*pF)(const vec& p); 
+        Vec (*pF)(const Vec& p); 
         int pDim; // Dimension of the system, taking into account time as a variable.
-        bool (*pDomain)(const vec& p); 
+        bool (*pDomain)(const Vec& p); 
+
     public:
         // Access to private data from the system
-        vec evaluate(const vec& p);
+        Vec evaluate(const Vec& p);
         int dimension();
-        bool isDomain(const vec& p);
+        bool isDomain(const Vec& p);
 
         // Default, copy and more constructors and default destructor
         DynSys(const DynSys& otherSys);
-        DynSys(vec (*f)(const vec& p), int dim, bool (*domain)(const vec& p));
+        DynSys(Vec (*f)(const Vec& p), int dim, bool (*domain)(const Vec& p));
         ~DynSys();
         DynSys& operator=(const DynSys& otherSys);
 
         // Extension of the default functions to grids
-        grid evaluate(const grid& otherGrid);
-        bool isDomainGrid(const grid& otherGrid);
+        Grid evaluate(const Grid& otherGrid);
+        bool isDomainGrid(const Grid& otherGrid);
 
         // Numeric integrators and Lagrange functions
-        vec RK4(const vec& initCond, double dt);
-        //vec RungeKutta(const vec& initCond, double dt);
-        double LagrFunction(const vec& initCond, double tau, double dt);
+        Vec RK4(const Vec& initCond, double dt);
+        //Vec RungeKutta(const Vec& initCond, double dt);
+        double LagrFunction(const Vec& initCond, double tau, double dt);
 
         // Extension of the 
-        grid RK4(const grid& initStep, double dt);
-        vec LagrFunction(const grid& baseState, double tau, double dt);
+        Grid RK4(const Grid& initStep, double dt);
+        Vec LagrFunction(const Grid& baseState, double tau, double dt);
         
         // Declarators from scratch and from netcdf files. Declarator from netcdf file has to implement interpolation on 
         // General destructor
 };
 
-#endif 
+#endif // DYNSYS_DYNSYS_HPP_
+
