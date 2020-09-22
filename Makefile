@@ -39,7 +39,7 @@ $(TARGET): $(OBJS) $(BINDIR)
 # rule to generate a dep file by using the C preprocessor
 # (see man cpp for details on the -MM and -MT options)
 $(DEPDIR)/%.d: $(SRCDIR)/%.cpp
-	($(CXX) $(CXXFLAGS) $(INC) $< -MM -MT $(@:.d=.o); printf '\t$(CXX) $(CXXFLAGS) $(INC) -c $< -o $(@:.d=.o)\n' ;) >$@
+	($(CXX) $(CXXFLAGS) $(INC) $< -MM -MT $(@:.d=.o) && printf '\t$(CXX) $(CXXFLAGS) $(INC) -c $< -o $(@:.d=.o)\n' ;) >$@
 
 $(DEPS): | $(DEPDIR)
 

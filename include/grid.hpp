@@ -1,69 +1,74 @@
-#ifndef GRIDHEADER
-#define GRIDHEADER
+#ifndef DYNSYS_GRID_HPP_
+#define DYNSYS_GRID_HPP_
 
-#include "vector.hpp"
+#include "vec.hpp"
+//NOTE: grids allow to assign to their vectors.
+// Vector assignment allows to change dimension.
+// The grid may end up with a different dimension for different points.
 
-class grid {
+//NOTE: Initially not labeled as todo.
+// Shorter description: Transform into a template.
+//TODO: type T; // To define in the future for supporting different types of variables
+class Grid {
     private:
-        // type T; // To define in the future for supporting different types of variables
-        vec* pData;
-        int pDim;
         int pLength;
+        Vec* pData;
 
-        // Declaration of 2D types of grids
+        //NOTE: maybe remove?
+        // Declaration of 2D types of Grids
         //bool orthogonal;
         //bool polar;
 
         //bool cylindrical;
+
     public:
-        // Access to private data operators and functions
-        int dimension();
-        int length();
-        vec& operator[](int pos);
-        vec operator[](int pos) const;
-        vec& operator()(int pos);
-        // double& operator[](int posvec, int posarg);
-        double& operator()(int posvec, int posarg);
-
-        // Access operators for the constant class
-        int dimension() const;
-        int length() const;
-
-        // Friend functions for the dimension and length of th system
-        friend int GetDimension(const grid& otherGrid);
-        friend int GetLength(const grid& otherGrid);
-        
         // Empty, copy, and both arguments constructors, default destructor
-        grid();
-        grid(const grid& otherGrid);
-        grid(int dim);
-        grid(int dim, int length);
-        ~grid();
-        grid& operator=(const grid& otherGrid);
+        Grid();
+        Grid(const Grid& otherGrid);
+        Grid(int dim); //NOTE: What?
+        Grid(int dim, int length);
+        ~Grid();
 
-        // Operations to push and remove the last point of a grid (dynamic memory allocation)
+        inline int length() const { return pLength; }
+        inline int dimension() const {
+            return pLength == 0? 0 : pData[0].length();
+        }
+        inline Vec& operator[](int i) { return pData[i]; }
+        inline Vec operator[](int i) const { return pData[i]; }
+
+        // Accessors for MatLab users that prefer 1-indexing and bound check
+        Vec& operator()(int i);
+        //NOTE: here in the const version we return const ref, not a value.
+        const Vec& operator()(int i) const;
+
+        double& operator()(int i, int j);
+        double operator()(int i, int j) const;
+
+
+        //TODO: Operations to push and remove the last point of a Grid (dynamic memory allocation) (vector?)
         
-        // Define the sum of two grids of the same size for Runge Kutta integration
-        grid operator+(const grid& otherGrid);
-        grid operator-(const grid& otherGrid);
-        grid operator*(const double& a);
-        grid operator/(const double& a);
+        //TODO: Define the sum of two Grids of the same size for Runge Kutta integration
+        Grid& operator=(const Grid& otherGrid);
+        Grid& operator+=(const Grid& otherGrid);
+        Grid& operator-=(const Grid& otherGrid);
+        Grid& operator*=(const double& d);
+        Grid& operator/=(const double& d);
 
-        // Members for operations on the constant class
-        grid operator+(const grid& otherGrid) const;
-        grid operator-(const grid& otherGrid) const;
-        grid operator*(const double& a) const;
-        grid operator/(const double& a) const;
-
-        // Vector declaration of norms and seminorms on grids, a natural
-        // extension component-wise of the ones defined for vectors
-        vec HoldNorm(const unsigned int& p);
-        vec HoldSemiNorm(const unsigned int& p); // useful for the M function
-        friend vec HoldNorm(const grid& g, double p);
-        friend vec HoldSemiNorm(const grid& g, double p);
-
-        // Declarations of rectilinear grids (???)
-        // Declare it on the appropriate constructors
+        //TODO: Declarations of rectilinear Grids (???)
+        //TODO: Declare it on the appropriate constructors
 };
 
-#endif
+inline Grid& operator+(Grid lhs, const Grid& rhs) { return lhs+=rhs; }
+inline Grid& operator-(Grid lhs, const Grid& rhs) { return lhs-=rhs; }
+inline Grid& operator*(Grid v, double d) { return v*=d; }
+inline Grid& operator/(Grid v, double d) { return v/=d; }
+
+// Vector declaration of norms and seminorms on Grids, a natural
+// extension component-wise of the ones defined for Vectors
+
+//NOTE: why unsiged?
+Vec HoldNorm(unsigned int p); //NOTE: const unsigned int& -> usigned int
+Vec HoldSemiNorm(unsigned int p);
+
+#endif // DYNSYS_GRID_HPP_
+
