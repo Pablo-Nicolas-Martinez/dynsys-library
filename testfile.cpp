@@ -42,6 +42,7 @@ int main() {
     Vec u = v + b;
 
     for (int i = 0; i < 3; ++i) std::cout << u[i] << ' ';
+    std::cout << std::endl;
     
     // Grid class testing
     Grid g(3, 3);
@@ -50,29 +51,59 @@ int main() {
     std::cout << "The dimension of the grid is " << g.dimension() << std::endl;
     std::cout << "The dimension of the grid is " << GetDimension(g) << std::endl;
 
+    // Testing
+    std::cout << "Hasta aquí llego" << std::endl;
+
     // Grid values assignation
     g[0] = v;
     g[1] = b;
     g[2] = u;
 
+    // Testing
+    std::cout << "Hasta aquí llego" << std::endl;
+
+    std::cout << g.length() << std::endl;
+    std::cout << g.dimension() << std::endl;
+
+    std::cout << g[0].length() << std::endl;
+
     // Value outputting
     for (int i = 0; i < g.length(); ++i) {
-        Vec& v(g[i]);
-        for (int j = 0; j < g.dimension(); ++j) std::cout << v[j] << ' ';
+        std::cout << "He hecho una iteración" << std::endl;
+        for (int j = 0; j < g.dimension(); ++j) std::cout << g[i][j] << ' ';
         std::cout << std::endl;
     }
 
+    // El problema está en el bucle
+    // Puede que nos estemos pasando de dimensión?
+
+    // Testing
+    std::cout << "Hasta aquí llego" << std::endl;
+
     // More grid declaration with copy and modification
     Grid h = Grid(3, 3);
+
+    // Testing
+    std::cout << "Hasta aquí llego" << std::endl;
+
+    Vec zero(3);
+    zero[0] = 0;
+    zero[1] = 0;
+    zero[2] = 0;
     
+    h[0] = zero;
+    h[1] = zero;
     h[2] = v;
 
-    Grid f = (g - h)/2;
+    Grid f(3, 3);
+    f = (g - h)/2;
+
+    // Testing
+    std::cout << "Hasta aquí llego" << std::endl;
 
     // Value outputting
     for (int i = 0; i < f.length(); ++i) {
-        Vec& v(f[i]);
-        for (int j = 0; j < f.dimension(); ++j) std::cout << v[j] << ' ';
+        for (int j = 0; j < f.dimension(); ++j) std::cout << f[i][j] << ' ';
         std::cout << std::endl;
     }
     
@@ -86,6 +117,9 @@ int main() {
     std::cout << "The components of the function Vector are given by" << std::endl;
     for (int i = 0; i < 3; ++i) std::cout << disp[i] << ' ';
     std::cout << std::endl << std::endl;
+
+    // Testing
+    std::cout << "Hasta aquí llego" << std::endl;
     
     // Testing the class declaration and Runge-Kutta methods
     DynSys Duffing(DuffFunction, 3, DuffDomain);
@@ -157,5 +191,7 @@ int main() {
     std::cout << "The Lagrange function of the third point is "
               << Duffing.LagrFunction(p3, 30, 0.1)
               << std::endl;
+
+    // Lagrange function of grids
 
 }

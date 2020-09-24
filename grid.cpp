@@ -14,7 +14,7 @@ Grid::Grid(const Grid& grid) : pLength(grid.pLength), pData(new Vec[pLength]) {
 //     pData = new Vec [pLength];
 // }
 
-Grid::Grid(int dim, int length) : pLength(length), pData(new Vec[pLength]) { }
+Grid::Grid(int dim, int length) : pLength(length), pDim(dim), pData(new Vec[pLength]) { }
 
 // Default destructor
 Grid::~Grid() {
@@ -44,6 +44,7 @@ double Grid::operator()(int i, int j) const {
     return pData[i-1](j);
 }
 
+// This operator does not assign the dimension of the grid
 Grid& Grid::operator=(const Grid& grid) {
     if (this != &grid) {
         pLength = grid.pLength;

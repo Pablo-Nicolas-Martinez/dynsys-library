@@ -12,6 +12,7 @@
 class Grid {
     private:
         int pLength;
+        int pDim;
         Vec* pData;
 
         //NOTE: maybe remove?
@@ -30,9 +31,10 @@ class Grid {
         ~Grid();
 
         inline int length() const { return pLength; }
-        inline int dimension() const {
+        /*inline int dimension() const {
             return pLength == 0? 0 : pData[0].length();
-        }
+        }*/
+        inline int dimension() const { return pDim; }
         inline Vec& operator[](int i) { return pData[i]; }
         inline Vec operator[](int i) const { return pData[i]; }
 
