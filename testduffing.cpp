@@ -3,14 +3,14 @@
 
 // Parameters for the system
 
-const int numpx = 1000;
-const int numpy = 1000;
+const int numpx = 200;
+const int numpy = 200;
 const double liminfx = -1.5;
 const double limsupx = 1.5;
 const double liminfy = -1.5;
 const double limsupy = 1.5;
 const double tau = 30;
-const double dt = 0.01;
+const double dt = 0.1;
 
 Vec DuffEquation(const Vec& p) {
     Vec f(3);
@@ -32,9 +32,15 @@ int main() {
             Vec v(3);
             v[0] = 0;
             v[1] = liminfx + i*(limsupx - liminfx)/numpx;
-            v[2] = liminfy + i*(limsupy - liminfy)/numpy;
+            v[2] = liminfy + j*(limsupy - liminfy)/numpy;
             g[j + numpy*i] = v;
         }
+    }
+
+    // Data output, probably a mess
+    for (int i = 0; i < numpx*numpy; ++i) {
+        for (int j = 0; j < 3; ++j) std::cout << g[i][j] << ' ';
+        std::cout << std::endl;
     }
 
     // Creation of the Duffing dynamical system

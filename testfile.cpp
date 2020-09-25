@@ -15,7 +15,7 @@ Vec DuffFunction(const Vec& p) {
     return v;
 }
 
-int main() {
+int test() {
 
     // Vector class testing
     
@@ -193,5 +193,5 @@ int main() {
               << std::endl;
 
     // Lagrange function of grids
-
+    return 0;
 }
