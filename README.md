@@ -16,4 +16,4 @@ This work has been developed under an MIT license. For more details have a look 
 
 ## Support and thanks
 
-This library has been developed for the course ''Dynamical Systems and applications'', which was part of the 2020 Severo Ochoa grant programme for introduction to research, offered by the ICMAT. I would like to thank the help of Witie ... and Emilio Domínguez Sánchez, who have done several contributions to the code and pointed out possible reformulations. Moreover, I would like to thank my tutor, José Antonio Jiménez Madrid, and remark his dedication and help throughout the course.
+This library has been developed for the course ''Dynamical Systems and applications'', which was part of the 2020 Severo Ochoa grant programme for introduction to research, offered by the ICMAT. I would like to thank the help of Weijie Chen and Emilio Domínguez Sánchez, who have done several contributions to the code and pointed out possible reformulations. Moreover, I would like to thank my tutor, José Antonio Jiménez Madrid, and remark his dedication and help throughout the course.
